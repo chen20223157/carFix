@@ -1,0 +1,121 @@
+<!--pages/order/create.wxml-->
+<view class="container">
+  <!-- 选择车辆 -->
+  <view class="section card">
+    <view class="section-title">选择车辆</view>
+    <view class="vehicle-selector" bindtap="selectVehicle">
+      <view class="vehicle-info" wx:if="{{selectedVehicle}}">
+        <view class="vehicle-plate">{{selectedVehicle.plateNumber}}</view>
+        <view class="vehicle-model">{{selectedVehicle.brand}} {{selectedVehicle.model}}</view>
+      </view>
+      <view class="placeholder" wx:else>
+        <text>请选择车辆</text>
+      </view>
+      <image class="arrow-icon" src="/images/arrow-right.png"></image>
+    </view>
+  </view>
+
+  <!-- 选择服务 -->
+  <view class="section card">
+    <view class="section-title">选择服务</view>
+    <view class="service-selector" bindtap="selectService">
+      <view class="service-info" wx:if="{{selectedService}}">
+        <view class="service-name">{{selectedService.itemName}}</view>
+        <view class="service-price">¥{{selectedService.price}}</view>
+      </view>
+      <view class="placeholder" wx:else>
+        <text>请选择服务项目</text>
+      </view>
+      <image class="arrow-icon" src="/images/arrow-right.png"></image>
+    </view>
+  </view>
+
+  <!-- 预约时间 -->
+  <view class="section card">
+    <view class="section-title">预约时间</view>
+    <picker mode="date" value="{{appointmentDate}}" start="{{today}}" bindchange="onDateChange">
+      <view class="picker-item">
+        <text>{{appointmentDate || '请选择日期'}}</text>
+        <image class="arrow-icon" src="/images/arrow-right.png"></image>
+      </view>
+    </picker>
+    <picker mode="time" value="{{appointmentTime}}" bindchange="onTimeChange">
+      <view class="picker-item">
+        <text>{{appointmentTime || '请选择时间'}}</text>
+        <image class="arrow-icon" src="/images/arrow-right.png"></image>
+      </view>
+    </picker>
+  </view>
+
+  <!-- 备注 -->
+  <view class="section card">
+    <view class="section-title">备注信息</view>
+    <textarea class="remark-input" 
+              placeholder="请输入备注信息（选填）" 
+              value="{{remark}}"
+              bindinput="onRemarkInput"
+              maxlength="200"></textarea>
+  </view>
+
+  <!-- 订单信息 -->
+  <view class="order-summary card">
+    <view class="summary-item">
+      <text class="label">服务费用</text>
+      <text class="value">¥{{selectedService ? selectedService.price : '0.00'}}</text>
+    </view>
+    <view class="summary-item total">
+      <text class="label">合计</text>
+      <text class="value">¥{{selectedService ? selectedService.price : '0.00'}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-bar">
+  <view class="total-price">
+    <text class="label">总计：</text>
+    <text class="price">¥{{selectedService ? selectedService.price : '0.00'}}</text>
+  </view>
+  <button class="btn-submit" bindtap="submitOrder">提交预约</button>
+</view>
+
+<!-- 车辆选择弹窗 -->
+<view class="modal {{showVehicleModal ? 'show' : ''}}" bindtap="closeVehicleModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择车辆</text>
+      <image class="close-icon" src="/images/close.png" bindtap="closeVehicleModal"></image>
+    </view>
+    <view class="vehicle-list">
+      <view class="vehicle-item {{item.id === selectedVehicle.id ? 'active' : ''}}" 
+            wx:for="{{vehicles}}" wx:key="id"
+            bindtap="onVehicleSelect" data-vehicle="{{item}}">
+        <view class="vehicle-plate">{{item.plateNumber}}</view>
+        <view class="vehicle-model">{{item.brand}} {{item.model}}</view>
+      </view>
+      <view class="add-vehicle" bindtap="goToAddVehicle">
+        <image class="add-icon" src="/images/add.png"></image>
+        <text>添加新车辆</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 服务选择弹窗 -->
+<view class="modal {{showServiceModal ? 'show' : ''}}" bindtap="closeServiceModal">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">选择服务</text>
+      <image class="close-icon" src="/images/close.png" bindtap="closeServiceModal"></image>
+    </view>
+    <view class="service-list">
+      <view class="service-item {{item.id === selectedService.id ? 'active' : ''}}" 
+            wx:for="{{services}}" wx:key="id"
+            bindtap="onServiceSelect" data-service="{{item}}">
+        <view class="service-name">{{item.itemName}}</view>
+        <view class="service-price">¥{{item.price}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+

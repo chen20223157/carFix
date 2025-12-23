@@ -1,0 +1,89 @@
+<!--pages/user/index.wxml-->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-header card">
+    <view class="user-info" bindtap="goToUserInfo">
+      <image class="avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}"></image>
+      <view class="user-detail">
+        <view class="nickname">{{userInfo.nickname || '点击登录'}}</view>
+        <view class="phone">{{userInfo.phone || '未绑定手机号'}}</view>
+      </view>
+      <image class="arrow-icon" src="/images/arrow-right.png"></image>
+    </view>
+  </view>
+
+  <!-- 我的订单 -->
+  <view class="order-section">
+    <view class="section-header">
+      <text class="section-title">我的订单</text>
+      <text class="more-link" bindtap="goToOrderList">全部订单 ></text>
+    </view>
+    <view class="order-status-list card">
+      <view class="status-item" bindtap="goToOrderList" data-status="0">
+        <image class="status-icon" src="/images/order-pending.png"></image>
+        <text class="status-name">待确认</text>
+        <view class="badge" wx:if="{{orderCount.pending > 0}}">{{orderCount.pending}}</view>
+      </view>
+      <view class="status-item" bindtap="goToOrderList" data-status="1">
+        <image class="status-icon" src="/images/order-confirmed.png"></image>
+        <text class="status-name">已确认</text>
+        <view class="badge" wx:if="{{orderCount.confirmed > 0}}">{{orderCount.confirmed}}</view>
+      </view>
+      <view class="status-item" bindtap="goToOrderList" data-status="2">
+        <image class="status-icon" src="/images/order-processing.png"></image>
+        <text class="status-name">服务中</text>
+        <view class="badge" wx:if="{{orderCount.processing > 0}}">{{orderCount.processing}}</view>
+      </view>
+      <view class="status-item" bindtap="goToOrderList" data-status="3">
+        <image class="status-icon" src="/images/order-finished.png"></image>
+        <text class="status-name">已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 我的车辆 -->
+  <view class="vehicle-section">
+    <view class="section-header">
+      <text class="section-title">我的车辆</text>
+      <text class="more-link" bindtap="goToVehicleList">管理车辆 ></text>
+    </view>
+    <view class="vehicle-list card">
+      <view class="vehicle-item" wx:for="{{vehicles}}" wx:key="id">
+        <view class="vehicle-plate">{{item.plateNumber}}</view>
+        <view class="vehicle-model">{{item.brand}} {{item.model}}</view>
+        <view class="default-badge" wx:if="{{item.isDefault === 1}}">默认</view>
+      </view>
+      <view class="add-vehicle" bindtap="goToAddVehicle">
+        <image class="add-icon" src="/images/add.png"></image>
+        <text>添加车辆</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-list card">
+      <view class="menu-item" bindtap="goToAbout">
+        <image class="menu-icon" src="/images/about.png"></image>
+        <text class="menu-name">关于我们</text>
+        <image class="arrow-icon" src="/images/arrow-right.png"></image>
+      </view>
+      <view class="menu-item" bindtap="goToHelp">
+        <image class="menu-icon" src="/images/help.png"></image>
+        <text class="menu-name">帮助中心</text>
+        <image class="arrow-icon" src="/images/arrow-right.png"></image>
+      </view>
+      <view class="menu-item" bindtap="goToSettings">
+        <image class="menu-icon" src="/images/settings.png"></image>
+        <text class="menu-name">设置</text>
+        <image class="arrow-icon" src="/images/arrow-right.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-section" wx:if="{{userInfo.id}}">
+    <button class="btn-logout" bindtap="logout">退出登录</button>
+  </view>
+</view>
+

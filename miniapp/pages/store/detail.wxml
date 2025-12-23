@@ -1,0 +1,107 @@
+<!--pages/store/detail.wxml-->
+<view class="container">
+  <!-- 门店信息 -->
+  <view class="store-header card">
+    <view class="store-basic">
+      <image class="store-logo" src="{{store.logo}}"></image>
+      <view class="store-info">
+        <view class="store-name">{{store.storeName}}</view>
+        <view class="store-rating">
+          <image class="star-icon" src="/images/star.png"></image>
+          <text>{{store.rating}}</text>
+          <text class="review-count">({{store.reviewCount}}条评价)</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="store-contact">
+      <view class="contact-item">
+        <image class="icon" src="/images/phone.png"></image>
+        <text>{{store.phone}}</text>
+        <button class="btn-call" bindtap="callPhone">拨打</button>
+      </view>
+      <view class="contact-item">
+        <image class="icon" src="/images/location.png"></image>
+        <text>{{store.address}}</text>
+        <button class="btn-navigate" bindtap="openLocation">导航</button>
+      </view>
+      <view class="contact-item">
+        <image class="icon" src="/images/time.png"></image>
+        <text>{{store.businessHours}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 门店简介 -->
+  <view class="store-description card">
+    <view class="section-title">门店简介</view>
+    <text class="description-text">{{store.description}}</text>
+  </view>
+
+  <!-- 服务项目 -->
+  <view class="service-section">
+    <view class="section-header">
+      <text class="section-title">服务项目</text>
+    </view>
+    
+    <!-- 分类标签 -->
+    <view class="category-tabs">
+      <view class="tab-item {{currentCategory === 0 ? 'active' : ''}}" bindtap="switchCategory" data-id="0">
+        全部
+      </view>
+      <view class="tab-item {{currentCategory === item.id ? 'active' : ''}}" 
+            wx:for="{{categories}}" wx:key="id" 
+            bindtap="switchCategory" data-id="{{item.id}}">
+        {{item.name}}
+      </view>
+    </view>
+
+    <!-- 服务列表 -->
+    <view class="service-list">
+      <view class="service-item card" wx:for="{{services}}" wx:key="id" bindtap="selectService" data-id="{{item.id}}">
+        <image class="service-image" src="{{item.image}}"></image>
+        <view class="service-info">
+          <view class="service-name">{{item.itemName}}</view>
+          <view class="service-desc">{{item.description}}</view>
+          <view class="service-footer">
+            <view class="service-price">¥{{item.price}}</view>
+            <view class="service-duration">约{{item.duration}}分钟</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户评价 -->
+  <view class="review-section">
+    <view class="section-header">
+      <text class="section-title">用户评价</text>
+      <text class="more-link" bindtap="goToReviewList">查看全部 ></text>
+    </view>
+    
+    <view class="review-list">
+      <view class="review-item card" wx:for="{{reviews}}" wx:key="id">
+        <view class="review-header">
+          <image class="user-avatar" src="{{item.userAvatar}}"></image>
+          <view class="user-info">
+            <view class="user-name">{{item.userName}}</view>
+            <view class="review-rating">
+              <image class="star-icon" src="/images/star.png" wx:for="{{item.rating}}" wx:key="*this"></image>
+            </view>
+          </view>
+          <view class="review-time">{{item.createTime}}</view>
+        </view>
+        <view class="review-content">{{item.content}}</view>
+        <view class="review-images" wx:if="{{item.images}}">
+          <image class="review-image" src="{{img}}" wx:for="{{item.images}}" wx:key="*this" wx:for-item="img"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部操作栏 -->
+<view class="bottom-bar">
+  <button class="btn-book" bindtap="goToBook">立即预约</button>
+</view>
+
